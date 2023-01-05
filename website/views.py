@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, session, flash
 import requests
 from datetime import datetime
 import os
-import html
+from urllib.parse import unquote
 
 views = Blueprint("views",__name__)
 api_key = os.getenv("API_KEY")
@@ -116,7 +116,7 @@ def city_weather(city_name):
     lat = args.get("lat")
     lon = args.get("lon")
     tab = args.get("tab")
-    name = html.unescape(city_name)
+    name = unquote(city_name)
 
     try:
         weather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={api_key}").json()
