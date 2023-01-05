@@ -20,6 +20,7 @@
 
 <!--Show saved locations-->
 <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
     {% for location in saved_locations %}
         <div class="shadow-sm p-3 mb-1 bg-body rounded text-center">
             <a href="/city/{{location['name']}}?lat={{location['lat']}}&lon={{location['lon']}}&tab=0"><h4>{{location["name"]}}</h4></a>
