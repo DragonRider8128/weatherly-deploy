@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<br>
+<div class="d-flex justify-content-center align-items-center container">
+    <form class="row g-2" method="POST">
+
+        <div class="col-auto form-group">
+            <input type="text" class="form-control" id="city" name="city" placeholder="Search for a city">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </div>
+</div>
+</form>
+
+<!--Show saved locations-->
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for location in saved_locations %}
+        <div class="shadow-sm p-3 mb-1 bg-body rounded text-center">
+            <a href="/city/{{location['name']}}?lat={{location['lat']}}&lon={{location['lon']}}&tab=0"><h4>{{location["name"]}}</h4></a>
+            
+            <p class="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg>
+                {{location["state"]}}, {{location["country"]}}
+            </p>
+
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="http://openweathermap.org/img/wn/{{weather_data[saved_locations.index(location)]['weather'][0]['icon']}}@4x.png" class="rounded mx-auto d-block" alt="icon for current weather" style="width:14rem;">
+                </div>
+                <div class="col-md-8 my-auto">
+                    <div class="card-body text-center align-middle">
+                        <h4 class="card-title">{{weather_data[saved_locations.index(location)]["weather"][0]["main"]}}</h4>
+                        <p class="card-text">{{weather_data[saved_locations.index(location)]["weather"][0]["description"].capitalize()}}</p>
+                        <p class="card-text fw-bold">Temperature: {{weather_data[saved_locations.index(location)]["main"]["temp"]|round|int}}°C</p>
+                        <p class="card-text fw-bold">Feels Like: {{weather_data[saved_locations.index(location)]["main"]["feels_like"]|round|int}}°C</p>
+                    </div>
+                </div>
+                </div>
+                <a class="btn btn-light" href="/remove?lat={{location['lat']}}&lon={{location['lon']}}">Remove from home</a>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+</div>
+<br>
+{% endblock %}

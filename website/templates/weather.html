@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}{{name}}{% endblock %}
+{% block content %}
+    <br>
+    <h1 class="text-center">{{name}}</h1>
+    <br>
+    {% if weather != [] %}
+        <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+            <!--Main weather card-->
+            <div class="card mb-3" style="max-width: 540px">
+                <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="http://openweathermap.org/img/wn/{{weather['weather'][0]['icon']}}@4x.png" class="rounded mx-auto d-block" alt="icon for current weather" style="width:14rem;">
+                </div>
+                <div class="col-md-8 my-auto">
+                    <div class="card-body text-center align-middle">
+                        <h4 class="card-title">{{weather["weather"][0]["main"]}}</h4>
+                        <p class="card-text">{{weather["weather"][0]["description"].capitalize()}}</p>
+                        <p class="card-text fw-bold">Temperature: {{weather["main"]["temp"]|round|int}}°C</p>
+                        <p class="card-text fw-bold">Feels Like: {{weather["main"]["feels_like"]|round|int}}°C</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!--Nav card with tabs-->
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-header">
+                      <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link {{'active' if tab == '0'}}" href="/city/{{name}}?lat={{lat}}&lon={{lon}}&tab=0">Humidity</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link {{'active' if tab == '1'}}" href="/city/{{name}}?lat={{lat}}&lon={{lon}}&tab=1">Visibility</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link {{'active' if tab == '2'}}" href="/city/{{name}}?lat={{lat}}&lon={{lon}}&tab=2">Wind</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{'active' if tab == '3'}}" href="/city/{{name}}?lat={{lat}}&lon={{lon}}&tab=3">Sunrise/Sunset</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-body visibility-card">
+
+                      <h5 class="card-title">
+                        {{'Humidity'  if tab == '0'}}
+                        {{'Visibility' if tab == '1'}}
+                        {{'Wind' if tab == '2'}}
+                        {{'Sunrise' if tab == '3'}}
+                    </h5>
+                                           
+                        {% if tab == '0' %}
+                            <p class="card-text fw-bold">{{weather["main"]["humidity"]}}%</p>
+                        {% elif tab == '1'%}
+                            <p class="card-text fw-bold ">{{(weather["visibility"]/1000)}}km</p>
+                            
+                            {% if (weather["visibility"]/1000)|int <= 4 %}
+                                <p class="card-text fw-bold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                </svg> Poor <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                </svg></p>
+                                <style>
+                                    .visibility-card{
+                                        background-color: #dc3545;
+                                        color: white;
+                                    }
+                                </style>
+
+                            {% elif (weather["visibility"]/1000)|int < 8 %}
+                            <p class="card-text fw-bold">Medium</p>
+                                <style>
+                                    .visibility-card{
+                                        background-color: #ffc107;
+                                    }
+                                </style>
+                            {% else %}
+                            <p class="card-text fw-bold">Good</p>
+                            <style>
+                                .visibility-card{
+                                    background-color: #198754;
+                                    color: white;
+                                }
+                            </style>
+                            {% endif %}
+                        
+                        {% elif tab == '2' %}
+                            <p class="card-text fw-bold">Speed: {{weather["wind"]["speed"]*3.6|round}}km/h</p>
+                            <p class="card-text fw-bold">Direction: {{weather["wind"]["deg"]}}°</p>
+                        
+                        {% elif tab == '3' %}
+                            <p class="card-text fw-bold">{{sunrise}} UTC</p>
+                            <h5 class="card-title">Sunset</h5>
+                            <p class="card-text fw-bold">{{sunset}} UTC</p>
+                        {% endif %}
+                    </div>
+                  </div>
+            </div>
+            <!--Precipitation Card-->
+            <div class="col">
+                <style>
+                    .precipitation-card {
+                        background-color: #f1f4f8;
+                    }
+                </style>
+
+                <div class="card precipitation-card text-center">
+                    <div class="card-header fw-bold">
+                        Precipitation
+                      </div>
+                    
+                        <div class="card-body">
+                        {% if "rain" in weather %}
+                        <h5 class="card-title">Rain</h5>
+
+                        <p class="card-text">{{weather["rain"]["1h"]}}mm in the past hour.</p>
+                        
+                        {% elif "snow" in weather %}
+                        <h5 class="card-title">Snow</h5>
+                        <p class="card-text">{{weather["snow"]["1h"]}}mm in the past hour.</p>
+                        {% else %}
+                        <h5 class="card-title">None</h5>
+                        <p class="card-text">No rain or snow currently.</p>
+                        {% endif %} 
+
+                    </div>
+                  </div>
+                  <br>
+            </div>
+        </div>
+    
+    {% else %}
+        <h2 class="text-muted text-center">No weather data found.</h2>
+    {% endif %}
+{% endblock %}
+
