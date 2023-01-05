@@ -125,4 +125,4 @@ def city_weather(city_name):
         sunrise = 0
         sunset = 0
 
-    return render_template("weather.html",weather=weather,name=city_name,tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
+    return render_template("weather.html",weather=weather,name=str(city_name),tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
