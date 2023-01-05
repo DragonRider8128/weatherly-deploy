@@ -120,10 +120,9 @@ def city_weather(city_name):
         description = weather["weather"][0]["description"]
         sunrise = datetime.utcfromtimestamp(weather["sys"]["sunrise"]).strftime('%H:%M')
         sunset = datetime.utcfromtimestamp(weather["sys"]["sunset"]).strftime('%H:%M')
-        name_dict = {"name":city_name}
     except:
         weather = []
         sunrise = 0
         sunset = 0
 
-    return render_template("weather.html",weather=weather,name=name_dict,tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
+    return render_template("weather.html",weather=weather,name=city_name,tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
