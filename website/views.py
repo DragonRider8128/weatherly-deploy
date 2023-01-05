@@ -115,6 +115,7 @@ def city_weather(city_name):
     lat = args.get("lat")
     lon = args.get("lon")
     tab = args.get("tab")
+    name = html.unescape(city_name)
 
     try:
         weather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={api_key}").json()
@@ -126,4 +127,4 @@ def city_weather(city_name):
         sunrise = 0
         sunset = 0
 
-    return render_template("weather.html",weather=weather,name=city_name,tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
+    return render_template("weather.html",weather=weather,name=name,tab=tab,lat=lat,lon=lon,sunrise=sunrise,sunset=sunset)
