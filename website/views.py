@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, session, flash
 import requests
 from datetime import datetime
+import os
 
 views = Blueprint("views",__name__)
-api_key = "321d8e7f20aab42c0cd011cd3d17461a"
+api_key = os.getenv("API_KEY")
 
 @views.route("/",methods=["POST","GET"])
 def home():
